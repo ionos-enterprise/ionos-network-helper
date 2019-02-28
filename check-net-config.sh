@@ -61,7 +61,6 @@ while test $# -gt 0 ; do
 done
 
 CommandList=(
-
     "date"
     "uname -a"
     "cat /etc/os-release"
@@ -78,7 +77,6 @@ CommandList=(
     "ping -c 5 localhost"
     "mtr -n -r $TargetHost"
     "ping -c 5 $TargetHost"
-
 )
 
 function CheckNetwork {
