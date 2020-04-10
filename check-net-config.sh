@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Author: Georg Schieche-Dirik
-# Contact: georg.schieche-dirik@profitbricks.com
-# Organization: ProfitBricks GmbH
+# Contact: georg.schieche-dirik@ionos.com
+# Organization: Ionos SE
 # License: GPL3
 
 # This script aims to help you collect network related basic system information which is necessary to investigate 
