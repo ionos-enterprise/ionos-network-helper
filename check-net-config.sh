@@ -70,7 +70,7 @@ CommandList=(
     "ip route show"
     "ip neighbour show"
     "iptables --list --numeric --verbose"
-    "cat /etc/sysconfig/network*/ifcfg-eth*"
+    "cat /etc/sysconfig/network*/ifcfg-*"
     "cat /etc/network/interfaces"
     "cat /etc/resolv.conf"
     "netstat --tcp --numeric -a"
