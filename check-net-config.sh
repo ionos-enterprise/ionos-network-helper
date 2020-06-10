@@ -76,7 +76,7 @@ CommandList=(
     "netstat --tcp --numeric -a"
     "netstat --udp --numeric -a"
     "ping -c 5 localhost"
-    "mtr -n -r $TargetHost"
+    "if which mtr > /dev/null ; then mtr -n -r $TargetHost ; else traceroute -M icmp $TargetHost ; fi"
     "ping -c 5 $TargetHost"
 )
 
