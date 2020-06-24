@@ -6,7 +6,7 @@
 # License: GPL3
 
 # This script aims to help you collect network related basic system information which is necessary to investigate 
-# issues on VM that run on the ProfitBricks platform but have only reduced or no network connectivity.
+# issues on a VM that runs on the IONOS cloud compute engine but have only reduced or no network connectivity.
 # It should be usable for any other Linux installation anywhere as well.
 
 function ShowHelp {
