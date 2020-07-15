@@ -75,6 +75,7 @@ CommandList=(
     "cat /etc/resolv.conf"
     "netstat --tcp --numeric -a"
     "netstat --udp --numeric -a"
+    "cat /etc/hosts"
     "ping -c 5 localhost"
     "if which mtr > /dev/null ; then mtr -n -r $TargetHost ; else traceroute -M icmp $TargetHost ; fi"
     "ping -c 5 $TargetHost"
