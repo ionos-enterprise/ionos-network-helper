@@ -3,16 +3,16 @@
 # Organization: Ionos SE
 # License: GPL3
 
-# This script aims to help you collect network related basic system information which is necessary to investigate 
+# This script aims to help you collect network related basic system information which is necessary to investigate
 # issues on a VM that runs on the IONOS cloud compute engine but have only reduced or no network connectivity.
 # It should be usable for any other Windows installation anywhere as well.
 
 param ([string] $RemoteHost = "185.48.118.10")
-	
-echo "This script will now create an overview of your network settings, please forward the output to support@cloud.ionos.com"
+
+Write-Output "This script will now create an overview of your network settings, please forward the output to support@cloud.ionos.com"
 
 #Logfile
-$hostname = hostname
+$hostname = Get-CimInstance -ClassName Win32_ComputerSystem | Select-Object -ExpandProperty Name
 $Logfile = $hostname + ".log"
 $User = $env:Username
 if (Test-Path -Path c:\Users\$User\AppData\Local\Temp) {
@@ -45,22 +45,22 @@ function FirewallReadout {
  function Ifconfigs {
 
 	Get-NetIPInterface |Sort-Object -Property IfIndex |Format-Table -AutoSize IfIndex,InterfaceAlias,AddressFamily,NlMtu,Dhcp,
-    @{Name='IPAddress';Expression={($PSItem |Get-NetIPAddress).IPAddress}},
-    @{Name='Status';Expression={($PSItem |Get-NetAdapter).Status}},
+	@{Name='IPAddress';Expression={($PSItem |Get-NetIPAddress).IPAddress}},
+	@{Name='Status';Expression={($PSItem |Get-NetAdapter).Status}},
 	@{Name='MacAddress';Expression={($PSItem |Get-NetAdapter).MacAddress}}
    }
 
 #define Ccommands to run
-$date = date
-$ver = [Environment]::OSVersion
-$virtio = Get-WmiObject Win32_PnPSignedDriver |Where-Object {$_.DeviceName -like "*VirtIO*"} |Select DeviceName,DriverVersion
+$date = Get-Date -Format "dd/MM/yyyy HH:mm"
+$ver = Get-CimInstance -ClassName Win32_OperatingSystem |Select-Object -Property Version,ServicePackMajorVersion,ServicePackMinorVersion
+$virtio = Get-CimInstance -ClassName Win32_PnPSignedDriver |Where-Object {$_.DeviceName -like "*VirtIO*"} |Select-Object DeviceName,DriverVersion
 $neigh = Get-NetNeighbor |Sort-Object -Property IfIndex|Format-Table ifIndex,IPAddress,LinkLayerAddress,State
 $iflist =  Ifconfigs
 $route = Get-NetRoute
 $DNS = Get-NetIPConfiguration |Select-Object -ExpandProperty DNSServer
-$TCPConnection = Get-NetTCPConnection |select LocalPort, RemoteAddress, RemotePort, State |Format-Table
+$TCPConnection = Get-NetTCPConnection |select-Object LocalPort, RemoteAddress, RemotePort, State |Format-Table
 $UDPConnection = Get-NetUDPEndpoint
-$hosts =  cat 'c:\Windows\System32\drivers\etc\hosts'
+$hosts =  Get-Content 'c:\Windows\System32\drivers\etc\hosts'
 $tracert = Test-NetConnection -ComputerName "$RemoteHost" -TraceRoute -InformationLevel Detailed
 $Firewall = FirewallReadout
 
@@ -70,20 +70,20 @@ $Commands = ("Date/Time","Windows Version","VirtIO Driver","IP Neighbor","List o
 
 
 #create the logfile
-echo "Please forward this Log to support@cloud.ionos.com" >> $log
-echo `t >> $log
+Write-Output "Please forward this Log to support@cloud.ionos.com" >> $log
+Write-Output `t >> $log
 
 
 for ($i=0; $i -lt $CommandList.length; $i++) {
-	echo $Commands[$i] >> $log
-	echo $CommandList[$i] >> $log
-	echo `t >> $log
+	Write-Output $Commands[$i] >> $log
+	Write-Output $CommandList[$i] >> $log
+	Write-Output `t >> $log
 }
 
-start $log
+start-Process $log
 #cleanup
 start-Sleep -Seconds 2
 Remove-Item $log
 if ($cleanup -eq "1") {
 Remove-Item -Path "c:\Temp"
-} 
+}
