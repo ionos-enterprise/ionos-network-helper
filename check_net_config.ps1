@@ -44,10 +44,11 @@ function FirewallReadout {
 
  function Ifconfigs {
 
-	Get-NetIPInterface |Sort-Object -Property IfIndex |Format-Table -AutoSize IfIndex,InterfaceAlias,AddressFamily,NlMtu,Dhcp,
+	Get-NetIPInterface |Format-Table -AutoSize InterfaceAlias,NlMtu,
 	@{Name='IPAddress';Expression={($PSItem |Get-NetIPAddress).IPAddress}},
+	@{Name='MacAddress';Expression={($PSItem |Get-NetAdapter).MacAddress}},
 	@{Name='Status';Expression={($PSItem |Get-NetAdapter).Status}},
-	@{Name='MacAddress';Expression={($PSItem |Get-NetAdapter).MacAddress}}
+	Dhcp |Out-String -Width 1000
    }
 
 #define Ccommands to run
@@ -56,7 +57,7 @@ $ver = Get-CimInstance -ClassName Win32_OperatingSystem |Select-Object -Property
 $virtio = Get-CimInstance -ClassName Win32_PnPSignedDriver |Where-Object {$_.DeviceName -like "*VirtIO*"} |Select-Object DeviceName,DriverVersion
 $neigh = Get-NetNeighbor |Sort-Object -Property IfIndex|Format-Table ifIndex,IPAddress,LinkLayerAddress,State
 $iflist =  Ifconfigs
-$route = Get-NetRoute
+$route = Get-NetRoute |Out-String -Width 1000
 $DNS = Get-NetIPConfiguration |Select-Object -ExpandProperty DNSServer
 $TCPConnection = Get-NetTCPConnection |select-Object LocalPort, RemoteAddress, RemotePort, State |Format-Table
 $UDPConnection = Get-NetUDPEndpoint
@@ -70,14 +71,14 @@ $Commands = ("Date/Time","Windows Version","VirtIO Driver","IP Neighbor","List o
 
 
 #create the logfile
-Write-Output "Please forward this Log to support@cloud.ionos.com" >> $log
-Write-Output `t >> $log
+Write-Output "Please forward this Log to support@cloud.ionos.com" |Out-File -FilePath $log -encoding utf8 -Append
+Write-Output `t |Out-File -FilePath $log -encoding utf8 -Append
 
 
 for ($i=0; $i -lt $CommandList.length; $i++) {
-	Write-Output $Commands[$i] >> $log
-	Write-Output $CommandList[$i] >> $log
-	Write-Output `t >> $log
+	Write-Output $Commands[$i] |Out-File -FilePath $log -encoding utf8 -Append
+	Write-Output $CommandList[$i] |Out-File -FilePath $log -encoding utf8 -Append
+	Write-Output `t |Out-File -FilePath $log -encoding utf8 -Append
 }
 
 start-Process $log
