@@ -78,6 +78,8 @@ CommandList=(
     "cat /etc/hosts"
     "ping -c 5 localhost"
     "if which mtr > /dev/null ; then mtr -n -r $TargetHost ; else traceroute -M icmp $TargetHost ; fi"
+    "time nslookup $TargetHost"
+    "time nslookup ietf.com"
     "ping -c 5 $TargetHost"
 )
 
