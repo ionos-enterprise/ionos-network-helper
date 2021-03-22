@@ -433,8 +433,8 @@ function Transfer() {
         echo "Rsync command exit status: ${TransferCommandExitStatus}"
     elif [[ "${UseS3}" == "yes" ]] ; then
         # TransferFileSize=$(stat -c %s ${File}.ongoing)
-        TransferCommand="s3cmd -q --force put ${File}.ongoing s3://${TransferBucket}/${Image}.ongoing.s3"
-        RemoteReceiveCommand="s3cmd -q --force get s3://${TransferBucket}/${Image}.ongoing.s3 ${RemoteLogDir}/${Image}.ongoing.s3"
+        TransferCommand="s3cmd -q --multipart-chunk-size-mb=512 --force put ${File}.ongoing s3://${TransferBucket}/${Image}.ongoing.s3"
+        RemoteReceiveCommand="s3cmd -q --multipart-chunk-size-mb=512 --force get s3://${TransferBucket}/${Image}.ongoing.s3 ${RemoteLogDir}/${Image}.ongoing.s3"
         RemoveS3File="s3cmd del s3://${TransferBucket}/${File##*/}.ongoing.s3"
         echo "Starting transfer: $TransferCommand"
         eval $TransferCommand
