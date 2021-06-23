@@ -96,7 +96,7 @@ function CheckNetwork {
     done
 }
 
-CheckNetwork | tee $ResultFile
+CheckNetwork 2>&1 | tee $ResultFile
 
 echo 
 
