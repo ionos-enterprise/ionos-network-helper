@@ -18,7 +18,7 @@ function ShowHelp {
         echo "[-h|--help [Anzeigen dieser Hilfe]]"
         echo
         echo "Als Ziele sollten öffentlich erreichbare IP-Adressen gewählt werden wie z. B." 
-        echo "185.48.118.10 (profitbricks.de)." 
+        echo "217.160.86.33 (dcd.ionos.com)." 
         echo
         echo "Die Option -p hält den Programmablauf an, damit die Ausgabe mittels Screenshot festghalten werden kann."
         echo
@@ -30,7 +30,7 @@ function ShowHelp {
         echo "[-h|--help [print this help message]]"
         echo
         echo "As target host you should prefer a publicly reachable IP address, for" 
-        echo "example 185.48.118.10 (profitbricks.de)."
+        echo "example 217.160.86.33 (dcd.ionos.com)." 
         echo
         echo "The pause option -p pauses the command execution for taking screenshots" 
         echo "of each console output one after another."
@@ -38,7 +38,7 @@ function ShowHelp {
     fi
 }
 
-TargetHost=185.48.118.10
+TargetHost=185.48.116.14
 ResultFile=/tmp/support_$(hostname)_$(date +%s).log
 
 while test $# -gt 0 ; do
@@ -101,10 +101,10 @@ CheckNetwork | tee $ResultFile
 echo 
 
 if [[ $LANG =~ de ]] ; then
-   echo "Wenn Sie ein Supportticket eröffnen möchten, senden Sie bitte eine E-Mail an support@profitbricks.com"
+   echo "Wenn Sie ein Supportticket eröffnen möchten, senden Sie bitte eine E-Mail an support@cloud.ionos.com"
    echo "und hängen Sie die Datei ${ResultFile} oder Screenshots der Kommandoausgaben an die E-Mail."
 else 
-   echo "If you would like to open a ticket for the ProfitBricks support, please write an e-mail to support@profitbricks.com"
+   echo "If you would like to open a ticket for the ProfitBricks support, please write an e-mail to support@cloud.ionos.com"
    echo "and attach the file ${ResultFile} or the screenshots of the command output to it."
 fi
 
