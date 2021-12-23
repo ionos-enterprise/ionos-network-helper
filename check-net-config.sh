@@ -83,6 +83,8 @@ function CommandListIPv4 {
         "uname -a"
         "cat /etc/os-release"
         "iptables --list --numeric --verbose"
+        "ls /etc/netplan/*"
+        "cat /etc/netplan/*"
         "cat /etc/sysconfig/network*/ifcfg-*"
         "cat /etc/network/interfaces"
         "cat /etc/resolv.conf"
